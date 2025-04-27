@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import { TCGPack } from "@/types";
+import { TCGPack } from "@/types/pack";
 import { parsePackDateString } from "@/utils/parsing";
 
 const PACKS_URL = "https://pocket.limitlesstcg.com/cards";

@@ -11,10 +11,12 @@
   "license": "ISC",
   "devDependencies": {
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "cheerio": "^1.0.0",
-    "mongodb": "^6.16.0"
+    "mongodb": "^6.16.0",
+    "ollama": "^0.5.15"
   }
 }
