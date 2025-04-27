@@ -13,7 +13,7 @@ async function main() {
   // );
 
   const red = await scrapeTCGCard("A1a", 85);
-  console.log(red.cardType === "pokemon" && red.attributes);
+  console.log(red.cardType === "pokemon" && red);
 }
 
 main();

@@ -6,7 +6,11 @@ const GET_PACKS_URL = (packCode: string, cardNumber: number) =>
 
 function createScraper(cardType: TCGCard["cardType"]) {
   if (cardType === "pokemon") {
-    return ($: cheerio.CheerioAPI): TCGCard => {
+    return (
+      $: cheerio.CheerioAPI,
+      packCode: string,
+      cardNumber: number
+    ): TCGCard => {
       const name = $(".card-text-name a").text().trim();
 
       const titleParts = $(".card-text-title")
@@ -97,6 +101,8 @@ function createScraper(cardType: TCGCard["cardType"]) {
       });
 
       return {
+        packCode,
+        cardNumber,
         cardType: "pokemon",
         attributes: {
           name,
@@ -111,13 +117,19 @@ function createScraper(cardType: TCGCard["cardType"]) {
       };
     };
   } else {
-    return ($: cheerio.CheerioAPI): TCGCard => {
+    return (
+      $: cheerio.CheerioAPI,
+      packCode: string,
+      cardNumber: number
+    ): TCGCard => {
       const name = $(".card-text-name a").text().trim();
 
       const sections = $(".card-text-section");
       const effectSection = sections.eq(1).text().trim();
 
       return {
+        packCode,
+        cardNumber,
         cardType,
         attributes: {
           name,
@@ -133,7 +145,10 @@ const scrapeItemNormal = createScraper("itemNormal");
 const scrapeItemFossil = createScraper("itemFossil");
 const scrapeSupporter = createScraper("supporter");
 
-export async function scrapeTCGCard(packCode: string, cardNumber: number) {
+export async function scrapeTCGCard(
+  packCode: string,
+  cardNumber: number
+): Promise<TCGCard> {
   const PACKS_URL = GET_PACKS_URL(packCode, cardNumber);
 
   const res = await fetch(PACKS_URL);
@@ -143,9 +158,9 @@ export async function scrapeTCGCard(packCode: string, cardNumber: number) {
   const typeText = $(".card-text-type").text().trim().toLowerCase();
 
   if (typeText.includes("pokémon")) {
-    return scrapePokemon($);
+    return scrapePokemon($, packCode, cardNumber);
   } else if (typeText.includes("supporter")) {
-    return scrapeSupporter($);
+    return scrapeSupporter($, packCode, cardNumber);
   } else if (typeText.includes("item")) {
     const fullText = $(".card-text")
       .text()
@@ -154,8 +169,8 @@ export async function scrapeTCGCard(packCode: string, cardNumber: number) {
       .replace(/ /g, "");
 
     return fullText.includes("playthiscardasif")
-      ? scrapeItemFossil($)
-      : scrapeItemNormal($);
+      ? scrapeItemFossil($, packCode, cardNumber)
+      : scrapeItemNormal($, packCode, cardNumber);
   } else {
     throw new Error(
       `Unknown card type for ${packCode}/${cardNumber}: ${typeText}`

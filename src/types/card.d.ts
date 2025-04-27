@@ -1,8 +1,9 @@
-export type TCGCard =
+export type TCGCard = { packCode: string; cardNumber: number } & (
   | { cardType: "pokemon"; attributes: PokemonAttributes }
   | { cardType: "itemNormal"; attributes: ItemNormalAttributes }
   | { cardType: "itemFossil"; attributes: ItemFossilAttributes }
-  | { cardType: "supporter"; attributes: SupporterAttributes };
+  | { cardType: "supporter"; attributes: SupporterAttributes }
+);
 
 export type PokemonAttributes = {
   name: string;
