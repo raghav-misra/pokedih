@@ -1,34 +1,27 @@
 export type TCGCard =
-  | { cardType: "pokemon"; pokemon: PokemonAttributes }
-  | { cardType: "itemNormal"; itemNormal: ItemNormalAttributes }
-  | { cardType: "itemFossil"; itemFossil: ItemFossilAttributes }
-  | { cardType: "supporter"; supporter: SupporterAttributes };
+  | { cardType: "pokemon"; attributes: PokemonAttributes }
+  | { cardType: "itemNormal"; attributes: ItemNormalAttributes }
+  | { cardType: "itemFossil"; attributes: ItemFossilAttributes }
+  | { cardType: "supporter"; attributes: SupporterAttributes };
 
 export type PokemonAttributes = {
   name: string;
-  hp: number;
-  types: string[]; // like ["Darkness", "Psychic"]
+  hp: number | null;
+  type: string;
   attacks: Attack[];
-  weaknesses?: Weakness[];
+  weakness?: Weakness;
   retreatCost: number;
-  stage:
-    | "Basic"
-    | "Stage 1"
-    | "Stage 2"
-    | "EX"
-    | "V"
-    | "VSTAR"
-    | "VMAX"
-    | "BREAK"
-    | "Radiant"
-    | string;
+  stage: Stage;
   evolvesFrom?: string;
 };
+
+export type Stage = "Basic" | "Stage 1" | "Stage 2" | "Unknown";
 
 export type Attack = {
   cost: string[]; // like ["P", "C", "C"]
   name: string;
-  damage?: string; // like "130" or "30x"
+  baseDamage: number | undefined;
+  damageModifier: "plus" | "times" | undefined;
   text?: string;
 };
 
@@ -45,7 +38,6 @@ export type ItemNormalAttributes = {
 export type ItemFossilAttributes = {
   name: string;
   effect: string;
-  setsUpPokemon: string; // like "Omanyte", "Kabuto", whatever fossil dudes
 };
 
 export type SupporterAttributes = {
