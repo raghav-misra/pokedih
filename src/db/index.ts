@@ -1,9 +1,7 @@
 import { MongoClient, Db, Collection, Document } from "mongodb";
-import dotenv from "dotenv";
 import { TCGCard } from "@/types/card";
 import { TCGPack } from "@/types/pack";
 
-dotenv.config();
 
 const client = new MongoClient(process.env.MONGO_DB_URL as string);
 
