@@ -1,23 +1,34 @@
 import { Action } from "@/types/dsl";
 
-export const manaphyOceanicGift: Action = {
-  type: "Repeat",
-  args: [
-    2,
-    {
-      type: "AttachEnergy",
-      args: [{ type: "PickMember", args: ["SelfBenchPokemon"] }, "W"],
-    },
-  ],
-};
+// end turn after an attack
+const makeActionAttack = (action: Action): Action => ({
+  type: "Chain",
+  args: [action, { type: "EndTurn" }],
+});
 
-export const wugtrioExPopOutThroughout: Action = {
-  type: "Repeat",
+// Flip 4 coins. This attack does 50 damage for each heads.
+const zapdosExThunderingHurricane: Action = makeActionAttack({
+  type: "ModifyHPBy",
   args: [
-    3,
+    { type: "PickSpecificMember", args: ["OpponentActivePokemon"] },
+    { type: "*", args: [50, { type: "CountHeads", args: [4] }] },
+  ],
+});
+
+// [Base Damage 40] Flip a coin. If heads, this attack does 60 more damage.
+const rapidashRisingLunge: Action = makeActionAttack({
+  type: "ModifyHPBy",
+  args: [
+    { type: "PickSpecificMember", args: ["OpponentActivePokemon"] },
     {
-      type: "ModifyHPBy",
-      args: [{ type: "PickMember", args: ["OpponentAllPokemon"] }, -50],
+      type: "+",
+      args: [
+        40,
+        {
+          type: "IfElseInteger",
+          args: [{ type: "SingleCoinFlipHeads" }, 60, 0],
+        },
+      ],
     },
   ],
-};
+});

@@ -1,3 +1,5 @@
+import { BooleanValue } from "./boolean";
+
 export type IntegerValue =
   | number
   | NumberOfFlipsUntilTailsAction
@@ -5,10 +7,16 @@ export type IntegerValue =
   | AddAction
   | SubtractAction
   | MultiplyAction
-  | FloorDivideAction;
+  | FloorDivideAction
+  | IfElseIntegerAction;
 
 export interface NumberOfFlipsUntilTailsAction {
   type: "NumberOfFlipsUntilTails";
+}
+
+export interface IfElseIntegerAction {
+  type: "IfElseInteger";
+  args: [BooleanValue, IntegerValue, IntegerValue];
 }
 
 export interface CountHeadsAction {
