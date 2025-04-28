@@ -32,3 +32,23 @@ const rapidashRisingLunge: Action = makeActionAttack({
     },
   ],
 });
+
+const centiskorchFireBlast: Action = makeActionAttack({
+  type: "Chain",
+  args: [
+    {
+      type: "ModifyHPBy",
+      args: [
+        {
+          type: "PickMember",
+          args: ["OpponentActivePokemon"],
+        },
+        -130,
+      ],
+    },
+    {
+      type: "RemoveEnergy",
+      args: [{ type: "PickActee" }, "R"],
+    },
+  ],
+});
