@@ -9,6 +9,7 @@ export type TCGCard = { packCode: string; cardNumber: number } & (
 export type PokemonAttributes = {
   name: string;
   hp: number | null;
+  ability?: Ability;
   type: string;
   attacks: Attack[];
   weakness?: Weakness;
@@ -18,6 +19,11 @@ export type PokemonAttributes = {
 };
 
 export type Stage = "Basic" | "Stage 1" | "Stage 2" | "Unknown";
+
+export type Ability = {
+  name: string;
+  text: string;
+};
 
 export type Attack = {
   cost: string[]; // like ["P", "C", "C"]

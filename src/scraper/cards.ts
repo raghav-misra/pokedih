@@ -1,4 +1,4 @@
-import { Attack, Stage, TCGCard, Weakness } from "@/types/card";
+import { Ability, Attack, Stage, TCGCard, Weakness } from "@/types/card";
 import * as cheerio from "cheerio";
 
 const GET_PACKS_URL = (packCode: string, cardNumber: number) =>
@@ -32,6 +32,25 @@ function createScraper(cardType: TCGCard["cardType"]) {
 
       if (typeSection.includes("evolves from")) {
         evolvesFrom = $(".card-text-type a").text().trim();
+      }
+
+      let ability: Ability | undefined;
+
+      const abilityContainer = $(".card-text-ability").eq(0);
+      if (abilityContainer.length > 0) {
+        const abilityName = $(abilityContainer)
+          .find(".card-text-ability-info")
+          .text()
+          .replace("Ability: ", "")
+          .trim();
+        const abilityText = $(abilityContainer)
+          .find(".card-text-ability-effect")
+          .text()
+          .trim();
+
+        if (abilityName !== "" && abilityText !== "") {
+          ability = { name: abilityName, text: abilityText };
+        }
       }
 
       const attacks: Attack[] = [];
@@ -105,6 +124,7 @@ function createScraper(cardType: TCGCard["cardType"]) {
         cardNumber,
         cardType: "pokemon",
         attributes: {
+          ability,
           name,
           hp,
           type,
