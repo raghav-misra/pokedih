@@ -2,12 +2,14 @@ import { BooleanAction } from "./boolean";
 import { IntegerValue } from "./integer";
 import { EnergyAction } from "./energy";
 import { HealthAction } from "./health";
+import { StatusAction } from "./status";
 
 // DSL Action definitions
 export type Action =
   | EnergyAction
   | BooleanAction
   | HealthAction
+  | StatusAction
   | DoNothingAction
   | EndTurnAction
   | ChainAction
