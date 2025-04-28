@@ -1,8 +1,9 @@
 export type TCGCard = { packCode: string; cardNumber: number } & (
   | { cardType: "pokemon"; attributes: PokemonAttributes }
-  | { cardType: "itemNormal"; attributes: ItemNormalAttributes }
-  | { cardType: "itemFossil"; attributes: ItemFossilAttributes }
-  | { cardType: "supporter"; attributes: SupporterAttributes }
+  | { cardType: "itemNormal"; attributes: GeneralAttributes }
+  | { cardType: "itemFossil"; attributes: GeneralAttributes }
+  | { cardType: "supporter"; attributes: GeneralAttributes }
+  | { cardType: "tool"; attributes: GeneralAttributes }
 );
 
 export type PokemonAttributes = {
@@ -31,17 +32,7 @@ export type Weakness = {
   value: string; // like "x2"
 };
 
-export type ItemNormalAttributes = {
+export type GeneralAttributes = {
   name: string;
   effect: string; // normal item effect text
-};
-
-export type ItemFossilAttributes = {
-  name: string;
-  effect: string;
-};
-
-export type SupporterAttributes = {
-  name: string;
-  effect: string;
 };

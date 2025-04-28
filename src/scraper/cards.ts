@@ -143,6 +143,7 @@ function createScraper(cardType: TCGCard["cardType"]) {
 const scrapePokemon = createScraper("pokemon");
 const scrapeItemNormal = createScraper("itemNormal");
 const scrapeItemFossil = createScraper("itemFossil");
+const scrapeTool = createScraper("tool");
 const scrapeSupporter = createScraper("supporter");
 
 export async function scrapeTCGCard(
@@ -161,6 +162,8 @@ export async function scrapeTCGCard(
     return scrapePokemon($, packCode, cardNumber);
   } else if (typeText.includes("supporter")) {
     return scrapeSupporter($, packCode, cardNumber);
+  } else if (typeText.includes("tool")) {
+    return scrapeTool($, packCode, cardNumber);
   } else if (typeText.includes("item")) {
     const fullText = $(".card-text")
       .text()
