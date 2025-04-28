@@ -1,4 +1,4 @@
-import { IntegerValue } from "./coin";
+import { IntegerValue } from "./integer";
 import { MemberValue } from "./member";
 
 export type HealthAction = ModifyHPByAction | ChangeMaxHPByAction;

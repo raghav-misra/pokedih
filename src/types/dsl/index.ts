@@ -1,17 +1,12 @@
-import { BooleanAction, BooleanValue } from "./boolean";
-import { IntegerValue } from "./coin";
-import { EnergyAction, EnergyValue } from "./energy";
+import { BooleanAction } from "./boolean";
+import { IntegerValue } from "./integer";
+import { EnergyAction } from "./energy";
 import { HealthAction } from "./health";
-import { MemberValue } from "./member";
 
 // DSL Action definitions
 export type Action =
-  | MemberValue
-  | EnergyValue
   | EnergyAction
-  | BooleanValue
   | BooleanAction
-  | IntegerValue
   | HealthAction
   | DoNothingAction
   | EndTurnAction
