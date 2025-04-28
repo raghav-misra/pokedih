@@ -1,3 +1,3 @@
 import { scrapeAllTCGData } from "@/scraper";
 
-scrapeAllTCGData();
+scrapeAllTCGData().then(() => process.exit(0));
