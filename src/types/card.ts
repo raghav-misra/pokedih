@@ -8,7 +8,7 @@ export type TCGCard = { packCode: string; cardNumber: number } & (
 
 export type PokemonAttributes = {
   name: string;
-  hp: number | null;
+  hp: number;
   ability?: Ability;
   type: string;
   attacks: Attack[];

@@ -25,5 +25,5 @@ export interface CardInPlay {
   currentHp: number;
   maxHp: number;
   statusEffects: Record<StatusValue, boolean>;
-  attachedTool: TCGCard & { cardType: "tool" };
+  attachedTool: (TCGCard & { cardType: "tool" }) | null;
 }

@@ -126,7 +126,7 @@ function createScraper(cardType: TCGCard["cardType"]) {
         attributes: {
           ability,
           name,
-          hp,
+          hp: hp ?? 0,
           type,
           attacks,
           weakness,
