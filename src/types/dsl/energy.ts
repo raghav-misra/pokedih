@@ -4,12 +4,12 @@ export type EnergyAction = AttachEnergyAction | RemoveEnergyAction;
 
 export interface AttachEnergyAction {
   type: "AttachEnergy";
-  args: [MemberValue, EnergyValue];
+  args: { 0: MemberValue; 1: EnergyValue };
 }
 
 export interface RemoveEnergyAction {
   type: "RemoveEnergy";
-  args: [MemberValue, EnergyValue];
+  args: { 0: MemberValue; 1: EnergyValue };
 }
 
 export type EnergyValue =
@@ -19,12 +19,12 @@ export type EnergyValue =
 
 export interface PickEnergyAction {
   type: "PickEnergy";
-  args: [MemberValue];
+  args: MemberValue;
 }
 
 export interface PickSpecificEnergyAction {
   type: "PickSpecificEnergy";
-  args: [MemberValue];
+  args: MemberValue;
 }
 
 export type PrimitiveEnergy =

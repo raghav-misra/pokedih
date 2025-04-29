@@ -9,15 +9,15 @@ export type StatusAction =
 
 export interface ApplyStatusAction {
   type: "ApplyStatus";
-  args: [MemberValue, StatusValue];
+  args: { 0: MemberValue; 1: StatusValue };
 }
 
 export interface RemoveAllStatusAction {
   type: "RemoveAllStatus";
-  args: [MemberValue];
+  args: MemberValue;
 }
 
 export interface RemoveStatusAction {
   type: "RemoveStatus";
-  args: [MemberValue, StatusValue];
+  args: { 0: MemberValue; 1: StatusValue };
 }

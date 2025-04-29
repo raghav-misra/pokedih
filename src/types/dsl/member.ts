@@ -9,12 +9,12 @@ export interface PickActeeAction {
 
 export interface PickMemberAction {
   type: "PickMember";
-  args: [Group];
+  args: Group;
 }
 
 export interface PickSpecificMemberAction {
   type: "PickSpecificMember";
-  args: [Group];
+  args: Group;
 }
 
 // Group types

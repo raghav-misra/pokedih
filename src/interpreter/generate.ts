@@ -1,8 +1,38 @@
-import { Action } from "@/types/dsl";
+import { Attack } from "@/types/card";
+import fs from "fs/promises";
 import OpenAI from "openai";
+import { createGenerator, Schema } from "ts-json-schema-generator";
+
+let schema: Schema | null = null;
+
+async function generateSchema() {
+  if (schema != null) return schema;
+
+  const config = {
+    path: "./src/types/dsl/index.ts",
+    tsconfig: "./tsconfig.json",
+    type: "Action",
+  };
+
+  schema = createGenerator(config).createSchema(config.type);
+  schema = {
+    ...schema,
+    type: "object",
+    properties: {
+      response: {
+        $ref: "#/definitions/Action",
+      },
+    },
+    required: ["response"],
+    additionalProperties: false,
+  };
+  delete schema["$ref"];
+  await fs.writeFile("schema.json", JSON.stringify(schema, null, 2));
+  return schema;
+}
 
 const FORM_PROMPT = (
-  attack: string
+  attack: Attack
 ) => `You are a structured data translator for a Pokémon TCG Pocket game engine.
 
 Your task is:  
@@ -13,24 +43,6 @@ No extra fields, no missing fields, no comments.
 Only output strict JSON.  
 
 ---
-
-JSON Schema (summary):
-
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Pocket TCG DSL Action",
-  "type": "object",
-  "oneOf": [
-    { "$ref": "#/definitions/Action" }
-  ],
-  "definitions": {
-    "Action": { "type": "object", "properties": { "type": { "enum": [...] }, "args": { "type": "array", "items": { "$ref": "#/definitions/Argument" } } }, "required": ["type", "args"] },
-    "Argument": { "oneOf": [ { "type": "number" }, { "type": "boolean" }, { "type": "string" }, { "$ref": "#/definitions/Action" }, { "$ref": "#/definitions/IntegerValue" }, { "$ref": "#/definitions/BooleanValue" }, { "$ref": "#/definitions/MemberValue" } ] },
-    "IntegerValue": { "type": "object", "properties": { "type": { "enum": ["CountHeads", "NumberOfFlipsUntilTails", "+", "-", "*", "/", "//"] }, "args": { "type": "array" } }, "required": ["type", "args"] },
-    "BooleanValue": { "type": "object", "properties": { "type": { "enum": ["SingleCoinFlipHeads", "And", "Or", "Not", ">", ">=", "<", "<="] }, "args": { "type": "array" } }, "required": ["type", "args"] },
-    "MemberValue": { "type": "object", "properties": { "type": { "enum": ["PickActee", "PickMember", "PickSpecificMember"] }, "args": { "type": "array" } }, "required": ["type", "args"] }
-  }
-}
 
 ---
 
@@ -99,18 +111,36 @@ IMPORTANT:
 ---
 
 Input:
-"${attack}"
+${attack.name}${
+  attack.baseDamage != null
+    ? `: ${attack.baseDamage}${
+        attack.damageModifier === "plus"
+          ? "+"
+          : attack.damageModifier === "times"
+          ? "x"
+          : ""
+      }`
+    : ""
+}
+${attack.text}
 Output:`;
 
 const client = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"], // This is the default and can be omitted
 });
 
-export async function getAttackSchema(attack: string) {
-  const response = await client.responses.create({
+export async function getAttackSchema(attack: Attack) {
+  const response = await client.responses.parse({
     model: "gpt-4o-mini",
     input: FORM_PROMPT(attack),
+    text: {
+      format: {
+        name: "tcg_pocket_card_action",
+        type: "json_schema",
+        schema: (await generateSchema()) as Record<string, unknown>,
+      },
+    },
   });
 
-  return response.output_text;
+  return response.output_parsed;
 }

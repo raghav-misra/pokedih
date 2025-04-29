@@ -5,10 +5,10 @@ export type HealthAction = ModifyHPByAction | ChangeMaxHPByAction;
 
 export interface ModifyHPByAction {
   type: "ModifyHPBy";
-  args: [MemberValue, IntegerValue];
+  args: { 0: MemberValue; 1: IntegerValue };
 }
 
 export interface ChangeMaxHPByAction {
   type: "ChangeMaxHPBy";
-  args: [MemberValue, IntegerValue];
+  args: { 0: MemberValue; 1: IntegerValue };
 }

@@ -25,10 +25,10 @@ export interface EndTurnAction {
 
 export interface ChainAction {
   type: "Chain";
-  args: [Action, Action];
+  args: { 0: Action; 1: Action };
 }
 
 export interface RepeatAction {
   type: "Repeat";
-  args: [IntegerValue, Action];
+  args: { 0: IntegerValue; 1: Action };
 }

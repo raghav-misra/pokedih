@@ -16,22 +16,22 @@ export type BooleanValue =
 
 export interface GreaterThanAction {
   type: ">";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface GreaterThanOrEqualAction {
   type: ">=";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface LessThanAction {
   type: "<";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface LessThanOrEqualAction {
   type: "<=";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface SingleCoinFlipHeadsAction {
@@ -40,20 +40,20 @@ export interface SingleCoinFlipHeadsAction {
 
 export interface AndAction {
   type: "And";
-  args: [BooleanValue, BooleanValue];
+  args: { 0: BooleanValue; 1: BooleanValue };
 }
 
 export interface OrAction {
   type: "Or";
-  args: [BooleanValue, BooleanValue];
+  args: { 0: BooleanValue; 1: BooleanValue };
 }
 
 export interface NotAction {
   type: "Not";
-  args: [BooleanValue];
+  args: BooleanValue;
 }
 
 export interface IfElseAction {
   type: "IfElse";
-  args: [BooleanValue, Action, Action];
+  args: { 0: BooleanValue; 1: Action; 2: Action };
 }

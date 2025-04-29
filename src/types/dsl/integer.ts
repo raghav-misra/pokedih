@@ -16,30 +16,30 @@ export interface NumberOfFlipsUntilTailsAction {
 
 export interface IfElseIntegerAction {
   type: "IfElseInteger";
-  args: [BooleanValue, IntegerValue, IntegerValue];
+  args: { 0: BooleanValue; 1: IntegerValue; 2: IntegerValue };
 }
 
 export interface CountHeadsAction {
   type: "CountHeads";
-  args: [IntegerValue];
+  args: IntegerValue;
 }
 
 export interface AddAction {
   type: "+";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface SubtractAction {
   type: "-";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface MultiplyAction {
   type: "*";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
 
 export interface FloorDivideAction {
   type: "//";
-  args: [IntegerValue, IntegerValue];
+  args: { 0: IntegerValue; 1: IntegerValue };
 }
