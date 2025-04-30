@@ -14,11 +14,11 @@ export interface RemoveEnergyAction {
 
 export type EnergyValue =
   | PrimitiveEnergy
-  | PickEnergyAction
+  | PickRandomEnergyAction
   | PickSpecificEnergyAction;
 
-export interface PickEnergyAction {
-  type: "PickEnergy";
+export interface PickRandomEnergyAction {
+  type: "PickRandomEnergy";
   args: MemberValue;
 }
 
