@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-
 import { Action } from "@/types/dsl";
 import { getAttackSchema } from "./interpreter/generate";
 
@@ -66,10 +65,22 @@ import { getAttackSchema } from "./interpreter/generate";
 //   text: "Flip a coin until you get tails. This attack does 40 more damage for each heads."
 // }).then(x => JSON.stringify(x, null, 2)).then(console.log);
 
+// getAttackSchema({
+//   name: "Steel Crush",
+//   baseDamage: 90,
+//   damageModifier: undefined,
+//   cost: ["M", "C", "C"],
+//   text: "Discard an Energy from your opponent's Active Pokémon.",
+// })
+//   .then((x) => JSON.stringify(x, null, 2))
+//   .then(console.log);
+
 getAttackSchema({
-  name: "Rising Lunge",
-  baseDamage: 40,
-  damageModifier: "plus",
-  cost: ["R", "C", "C"],
-  text: "Flip a coin. If heads, this attack does 60 more damage."
-}).then(x => JSON.stringify(x, null, 2)).then(console.log);
+  "name": "Single-Horn Throw",
+  "baseDamage": 50,
+  "damageModifier": "plus",
+  "cost": ["G", "C", "C"],
+  "text": "Flip 2 coins. If both of them are heads, this attack does 70 more damage."
+})
+  .then((x) => JSON.stringify(x, null, 2))
+  .then(console.log);
