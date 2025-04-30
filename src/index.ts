@@ -3,6 +3,7 @@ dotenv.config();
 
 import { Action } from "@/types/dsl";
 import { getAttackSchema } from "./interpreter/generate";
+import { scrapeTCGCard } from "./scraper/cards";
 
 // // end turn after an attack
 // const makeActionAttack = (action: Action): Action => ({
@@ -75,12 +76,20 @@ import { getAttackSchema } from "./interpreter/generate";
 //   .then((x) => JSON.stringify(x, null, 2))
 //   .then(console.log);
 
-getAttackSchema({
-  "name": "Single-Horn Throw",
-  "baseDamage": 50,
-  "damageModifier": "plus",
-  "cost": ["G", "C", "C"],
-  "text": "Flip 2 coins. If both of them are heads, this attack does 70 more damage."
-})
+scrapeTCGCard("P-A", 25)
+  .then((x) => {
+    if (x.cardType !== "pokemon") {
+      throw "not a pokemon";
+    }
+
+    const lastAttack = x.attributes.attacks.at(0);
+    if (lastAttack == null) {
+      throw "no attacks";
+    }
+
+    return lastAttack;
+  })
+  .then(getAttackSchema)
   .then((x) => JSON.stringify(x, null, 2))
-  .then(console.log);
+  .then(console.log)
+  .catch(console.error);

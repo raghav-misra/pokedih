@@ -3,6 +3,7 @@ import { IntegerValue } from "./integer";
 import { EnergyAction } from "./energy";
 import { HealthAction } from "./health";
 import { StatusAction } from "./status";
+import { PlayerAction } from "./player";
 
 // DSL Action definitions
 export type Action =
@@ -10,6 +11,7 @@ export type Action =
   | BooleanAction
   | HealthAction
   | StatusAction
+  | PlayerAction
   | DoNothingAction
   | EndTurnAction
   | ChainAction

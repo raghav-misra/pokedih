@@ -31,9 +31,10 @@ async function generateSchema() {
   return schema;
 }
 
-const FORM_PROMPT = (
-  attack: Attack
-) => `You are a structured data translator for a Pokémon TCG Pocket game engine.
+const FORM_PROMPT = (attack: Attack) => `
+# OBJECTIVE
+
+You are a structured data translator for a Pokémon TCG Pocket game engine.
 
 Your task is:  
 Given the description of an attack or ability in natural language, output the corresponding Action JSON object according to the following JSON Schema.
@@ -42,23 +43,19 @@ The structure must match exactly.
 No extra fields, no missing fields, no comments.  
 Only output strict JSON.  
 
----
-
----
-
-Examples:
+# EXAMPLES:
 
 Input:
 "Flip 4 coins. This attack does 50 damage for each heads."
 
 Output:
 {
-  "type": "ModifyHPBy",
+  "type": "DealDamageBy",
   "args": [
-    { "type": "PickSpecificMember", "args": ["OpponentActivePokemon"] },
+    { "type": "PickSpecificMember", "args": "OpponentActivePokemon" },
     {
       "type": "*",
-      "args": [50, { "type": "CountHeads", "args": [4] }]
+      "args": { 0: 50, 1: { "type": "CountHeads", "args": 4 } }
     }
   ]
 }
@@ -75,10 +72,10 @@ Output:
     { "type": "SingleCoinFlipHeads" },
     {
       "type": "ApplyStatus",
-      "args": [
-        { "type": "PickSpecificMember", "args": ["OpponentActivePokemon"] },
-        "Paralyzed"
-      ]
+      "args": {
+        0: { "type": "PickSpecificMember", "args": "OpponentActivePokemon" },
+        1: "Paralyzed"
+      }
     },
     { "type": "DoNothing" }
   ]
@@ -87,31 +84,33 @@ Output:
 ---
 
 Input:
-"Draw 2 cards."
+"Insightful Slap: 10 (info about damage to opponent active pokemon)
+Draw 2 cards."
 
 Output:
 {
   "type": "DrawCards",
-  "args": [2]
+  "args": { 0: "Self", 1: 2 }
 }
 
 ---
 
-IMPORTANT:
+# IMPORTANT NOTES
 
 - Always output valid JSON only, no explanation.
 - Always match types and arguments exactly per the schema.
 - Use the simplest structure needed.
 - Omit no required fields.
 - No free-form text, no pseudocode, no comments.
+- Sequential actions should be "Chain"ed.
 - Operations across multiple actions/values are binary (two arguments).
 - ModifyHPBy is used for healing AND damage. Negative values imply damage, positive imply healing.
 - IfElse returns no value. To compute conditional values, use IfElseInteger or IfElseMember.
 
----
+# YOUR JOB
 
 Input:
-${attack.name}${
+"${attack.name}${
   attack.baseDamage != null
     ? `: ${attack.baseDamage}${
         attack.damageModifier === "plus"
@@ -119,10 +118,10 @@ ${attack.name}${
           : attack.damageModifier === "times"
           ? "x"
           : ""
-      }`
+      } (damage to opponent active pokemon)`
     : ""
 }
-${attack.text}
+${attack.text}"
 Output:`;
 
 const client = new OpenAI({

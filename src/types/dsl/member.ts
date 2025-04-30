@@ -1,13 +1,13 @@
 export type MemberValue =
   | PickActeeAction
-  | PickMemberAction
+  | PickRandomMemberAction
   | PickSpecificMemberAction;
 
 export interface PickActeeAction {
   type: "PickActee";
 }
 
-export interface PickMemberAction {
+export interface PickRandomMemberAction {
   type: "PickMember";
   args: Group;
 }

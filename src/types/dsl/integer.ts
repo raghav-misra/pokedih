@@ -1,4 +1,6 @@
 import { BooleanValue } from "./boolean";
+import { EnergyValue } from "./energy";
+import { MemberValue } from "./member";
 
 export type IntegerValue =
   | number
@@ -8,7 +10,9 @@ export type IntegerValue =
   | SubtractAction
   | MultiplyAction
   | FloorDivideAction
-  | IfElseIntegerAction;
+  | IfElseIntegerAction
+  | CountEnergyAction
+  | CountEnergyOfTypeAction;
 
 export interface NumberOfFlipsUntilTailsAction {
   type: "NumberOfFlipsUntilTails";
@@ -42,4 +46,14 @@ export interface MultiplyAction {
 export interface FloorDivideAction {
   type: "//";
   args: { 0: IntegerValue; 1: IntegerValue };
+}
+
+export interface CountEnergyAction {
+  type: "CountEnergy";
+  args: MemberValue;
+}
+
+export interface CountEnergyOfTypeAction {
+  type: "CountEnergyOfType";
+  args: { 0: MemberValue; 1: EnergyValue };
 }
