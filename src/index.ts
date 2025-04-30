@@ -76,7 +76,7 @@ import { scrapeTCGCard } from "./scraper/cards";
 //   .then((x) => JSON.stringify(x, null, 2))
 //   .then(console.log);
 
-scrapeTCGCard("P-A", 25)
+scrapeTCGCard("A1", 47)
   .then((x) => {
     if (x.cardType !== "pokemon") {
       throw "not a pokemon";

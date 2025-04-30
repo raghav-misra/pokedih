@@ -1,20 +1,29 @@
+import { IntegerValue } from "./integer";
+
 export type MemberValue =
+  | Group
   | PickActeeAction
-  | PickRandomMemberAction
-  | PickSpecificMemberAction;
+  | PickAllMembersAction
+  | PickAnyMemberAction
+  | PickNMembersOfGroupAction;
 
 export interface PickActeeAction {
   type: "PickActee";
 }
 
-export interface PickRandomMemberAction {
-  type: "PickMember";
+export interface PickAllMembersAction {
+  type: "PickAllMembers";
   args: Group;
 }
 
-export interface PickSpecificMemberAction {
-  type: "PickSpecificMember";
+export interface PickAnyMemberAction {
+  type: "PickAnyMember";
   args: Group;
+}
+
+export interface PickNMembersOfGroupAction {
+  type: "PickNMembers";
+  args: { 0: IntegerValue; 1: Group };
 }
 
 // Group types

@@ -12,18 +12,10 @@ export interface RemoveEnergyAction {
   args: { 0: MemberValue; 1: EnergyValue };
 }
 
-export type EnergyValue =
-  | PrimitiveEnergy
-  | PickRandomEnergyAction
-  | PickSpecificEnergyAction;
+export type EnergyValue = PrimitiveEnergy | PickAnyEnergyAction;
 
-export interface PickRandomEnergyAction {
-  type: "PickRandomEnergy";
-  args: MemberValue;
-}
-
-export interface PickSpecificEnergyAction {
-  type: "PickSpecificEnergy";
+export interface PickAnyEnergyAction {
+  type: "PickAnyEnergy";
   args: MemberValue;
 }
 

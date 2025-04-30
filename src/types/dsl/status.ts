@@ -5,7 +5,8 @@ export type StatusValue = "Burned" | "Poisoned" | "Paralyzed" | "Asleep";
 export type StatusAction =
   | ApplyStatusAction
   | RemoveAllStatusAction
-  | RemoveStatusAction;
+  | RemoveStatusAction
+  | PickAnyStatusAction;
 
 export interface ApplyStatusAction {
   type: "ApplyStatus";
@@ -20,4 +21,8 @@ export interface RemoveAllStatusAction {
 export interface RemoveStatusAction {
   type: "RemoveStatus";
   args: { 0: MemberValue; 1: StatusValue };
+}
+
+export interface PickAnyStatusAction {
+  type: "PickAnyStatus";
 }

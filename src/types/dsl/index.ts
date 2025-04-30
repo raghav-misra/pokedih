@@ -15,7 +15,7 @@ export type Action =
   | DoNothingAction
   | EndTurnAction
   | ChainAction
-  | RepeatAction;
+  | RepeatNTimesAction;
 
 export interface DoNothingAction {
   type: "DoNothing";
@@ -30,7 +30,7 @@ export interface ChainAction {
   args: { 0: Action; 1: Action };
 }
 
-export interface RepeatAction {
-  type: "Repeat";
+export interface RepeatNTimesAction {
+  type: "RepeatNTimes";
   args: { 0: IntegerValue; 1: Action };
 }

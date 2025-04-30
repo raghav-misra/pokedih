@@ -1,12 +1,14 @@
 import { Attack } from "@/types/card";
-import fs from "fs/promises";
 import OpenAI from "openai";
 import { createGenerator, Schema } from "ts-json-schema-generator";
 
 let schema: Schema | null = null;
 
 async function generateSchema() {
-  if (schema != null) return schema;
+  if (schema != null) {
+    console.log("Found existing schema!");
+    return schema;
+  }
 
   const config = {
     path: "./src/types/dsl/index.ts",
@@ -22,12 +24,13 @@ async function generateSchema() {
       response: {
         $ref: "#/definitions/Action",
       },
+      justifyYourResponse: { type: "string" },
     },
-    required: ["response"],
+    required: ["response", "justifyYourResponse"],
     additionalProperties: false,
   };
   delete schema["$ref"];
-  await fs.writeFile("schema.json", JSON.stringify(schema, null, 2));
+  console.log("Generated new schema.");
   return schema;
 }
 
@@ -106,6 +109,8 @@ Output:
 - Operations across multiple actions/values are binary (two arguments).
 - ModifyHPBy is used for healing AND damage. Negative values imply damage, positive imply healing.
 - IfElse returns no value. To compute conditional values, use IfElseInteger or IfElseMember.
+- Pay close attention to the types of energies, members, and how general they are. Do not over-assume or make an example of an attack.
+- The example outputs have no associated justification. But you are expected to provide reasoning for your response in the justifyYourResponse value of the output JSON.
 
 # YOUR JOB
 
@@ -129,6 +134,7 @@ const client = new OpenAI({
 });
 
 export async function getAttackSchema(attack: Attack) {
+  console.log("Sending LLM request.");
   const response = await client.responses.parse({
     model: "gpt-4o-mini",
     input: FORM_PROMPT(attack),
@@ -140,6 +146,8 @@ export async function getAttackSchema(attack: Attack) {
       },
     },
   });
+
+  console.log("Received LLM response.");
 
   return response.output_parsed;
 }
